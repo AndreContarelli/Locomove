@@ -10,9 +10,22 @@
 		11B476E62FE9BB1A00658160 /* Checkin.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Checkin.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		11B4778A2FE9DC2A00658160 /* Exceptions for "Checkin" folder in "Checkin" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 11B476E52FE9BB1A00658160 /* Checkin */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		11B476E82FE9BB1A00658160 /* Checkin */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				11B4778A2FE9DC2A00658160 /* Exceptions for "Checkin" folder in "Checkin" target */,
+			);
 			path = Checkin;
 			sourceTree = "<group>";
 		};
@@ -256,6 +269,8 @@
 				DEVELOPMENT_TEAM = 4F35V4FS9S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Checkin/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show the users position on the map";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -292,6 +307,8 @@
 				DEVELOPMENT_TEAM = 4F35V4FS9S;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Checkin/Info.plist;
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "To show the users position on the map";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -6,16 +6,40 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ContentView: View {
+    
+    @StateObject private var locationManager = LocationManager()
+    
+    @State private var cameraPosition: MapCameraPosition = .userLocation(fallback: .automatic)
+    
+    @State private var isShowingSheet: Bool = true
+    
+    @StateObject var apiViewModel = APIViewModel()
+    
+    @State private var sheetSize: PresentationDetent = .fraction(0.25)
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        Map(position: $cameraPosition) {
+            UserAnnotation()
         }
-        .padding()
+        .mapControls {
+            MapUserLocationButton()
+            MapCompass()
+            MapScaleView()
+        }
+        .onAppear {
+            locationManager.requestPermission()
+        }
+        .sheet(isPresented: $isShowingSheet) {
+            SheetView(apiViewModel: apiViewModel)
+                .presentationDetents([.height(332), .fraction(0.15)])
+                .presentationDragIndicator(.visible)
+
+        }
+        
     }
 }
 
