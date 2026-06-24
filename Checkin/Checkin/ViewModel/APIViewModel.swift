@@ -63,4 +63,18 @@ class APIViewModel: ObservableObject {
             print("Erro no Decoder: \(error)")
         }
     }
+    
+    func fetchParadas(codigoLinha: Int) async -> Int {
+        let urlString = "\(baseUrl)/Parada/BuscarParadasPorLinha?codigoLinha=\(codigoLinha)"
+        guard let url = URL(string: urlString) else { return 0 }
+
+        do {
+            let (data, _) = try await session.data(from: url)
+            let paradas = try JSONDecoder().decode([StopModel].self, from: data)
+            return paradas.count
+        } catch {
+            print("Erro ao buscar paradas para linha \(codigoLinha): \(error)")
+            return 0
+        }
+    }
 }

@@ -8,34 +8,40 @@
 import SwiftUI
 
 struct LineCard: View {
+    let line: LineModel
+    @ObservedObject var apiViewModel: APIViewModel
+
+    @State private var totalParadas: Int? = nil
+
     var body: some View {
-        HStack(spacing: 0){
-            
-            LineIdentificator()
-            
-            VStack(alignment: .leading){
-                
-                Text("Itaim Bibi") // Bairro
-                    .font(.system(size: 16))
-                    .fontWeight(.medium)
-                Text("Term. Varginha") // Terminal
-                    .font(.system(size: 16))
-                    .fontWeight(.medium)
+        HStack(spacing: 0) {
+            LineIdentificator(letreiro: "\(line.lt)-\(line.tl)")
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(line.tp.capitalized)
+                    .font(.system(size: 16, weight: .medium))
+                Text(line.ts.capitalized)
+                    .font(.system(size: 16, weight: .medium))
             }
             .padding(.leading, 8)
-        
-            VStack(alignment: .trailing) {
-                
-                Text("82 paradas") // Nuemero de paradas
-                    .font(.system(size: 12))
-                Image(systemName: "arrow.clockwise.circle")
-                    .foregroundStyle(.cRed)
+
+            Spacer()
+
+            VStack(alignment: .trailing, spacing: 4) {
+                if let total = totalParadas {
+                    Text("\(total) paradas")
+                        .font(.system(size: 12))
+                        .foregroundStyle(.secondary)
+                } else {
+                    ProgressView()
+                        .scaleEffect(0.7)
+                }
+                Spacer()
             }
-            .padding(.leading, 87)
+        }
+        .padding(.vertical, 4)
+        .task {
+            totalParadas = await apiViewModel.fetchParadas(codigoLinha: line.cl)
         }
     }
-}
-
-#Preview {
-    LineCard()
 }
