@@ -11,6 +11,7 @@ struct SheetView: View {
     
     @State private var searchTerm: String = ""
     @StateObject var apiViewModel: APIViewModel
+    @Binding var selectedDetent: PresentationDetent
     let meuToken = "0150c9a54a15dad7e7cfd8bb18e62400e680a035a2154e88a934a0ec121de94e"
     
     var body: some View {
@@ -28,13 +29,6 @@ struct SheetView: View {
                         .font(.system(size: 22))
                         .foregroundStyle(.fPrimary)
                         .multilineTextAlignment(.center)
-                    
-                    Button("CLICA EM MIM") {
-                        Task {
-                            await apiViewModel.autenticar(token: meuToken)
-                            apiViewModel.fetch()
-                        }
-                    }
                 }
                 .padding()
             } else {
@@ -44,5 +38,16 @@ struct SheetView: View {
             }
         }
         .searchable(text: $searchTerm, placement: .navigationBarDrawer(displayMode: .always), prompt: "Pesquisar")
+        .onAppear {
+            Task {
+                await apiViewModel.autenticar(token: meuToken)
+            }
+        }
+        .onChange(of: searchTerm) { _, newValue in
+            withAnimation {
+                selectedDetent = newValue.isEmpty ? .height(80) : .fraction(0.45)
+            }
+            if newValue.isEmpty { apiViewModel.busLines = [] }
+        }
     }
 }

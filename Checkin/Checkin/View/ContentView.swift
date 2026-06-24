@@ -20,6 +20,7 @@ struct ContentView: View {
     
     @State private var sheetSize: PresentationDetent = .fraction(0.25)
     
+    @State private var selectedDetent: PresentationDetent = .height(80)
     
     var body: some View {
         Map(position: $cameraPosition) {
@@ -33,10 +34,11 @@ struct ContentView: View {
         .onAppear {
             locationManager.requestPermission()
         }
-        .sheet(isPresented: $isShowingSheet) {
-            SheetView(apiViewModel: apiViewModel)
-                .presentationDetents([.height(332), .fraction(0.15)])
+        .sheet(isPresented: .constant(true)) {
+            SheetView(apiViewModel: apiViewModel, selectedDetent: $selectedDetent)
+                .presentationDetents([.height(80), .fraction(0.45)], selection: $selectedDetent)
                 .presentationDragIndicator(.visible)
+                .interactiveDismissDisabled(true)      
 
         }
         

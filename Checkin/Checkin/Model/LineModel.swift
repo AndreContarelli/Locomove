@@ -13,11 +13,8 @@ struct LineModel: Codable, Identifiable {
     let tl: Int
     let tp: String
     let ts: String
-    
-    init(cl: Int, tl: Int, tp: String, ts: String) {
-        self.cl = cl
-        self.tl = tl
-        self.tp = tp
-        self.ts = ts
+
+    enum CodingKeys: String, CodingKey {
+        case cl, tl, tp, ts  
     }
 }
