@@ -7,16 +7,15 @@
 import SwiftUI
 
 struct SheetView: View {
-
+    
     @State private var searchTerm: String = ""
     @ObservedObject var apiViewModel: APIViewModel
     @Binding var isExpanded: Bool
-
+    
     let meuToken = "0150c9a54a15dad7e7cfd8bb18e62400e680a035a2154e88a934a0ec121de94e" // sei que preciso esconder isso, to descobrindo como ainda :)
-
+    
     var body: some View {
         VStack(spacing: 0) {
-            // Barra de pesquisa
             HStack {
                 Image(systemName: "magnifyingglass")
                     .foregroundStyle(.secondary)
@@ -41,11 +40,11 @@ struct SheetView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .padding(.horizontal, 16)
             .padding(.vertical, 8)
-
+            
             // Conteudo só quando expandido
             if isExpanded {
                 Divider()
-
+                
                 if apiViewModel.busLines.isEmpty {
                     VStack() {
                         Image(systemName: "bus")
@@ -58,7 +57,7 @@ struct SheetView: View {
                             .multilineTextAlignment(.center)
                             .fontWeight(.semibold)
                             .foregroundStyle(.fPrimary)
-//                            .padding(.bottom, 8)
+                        //                            .padding(.bottom, 8)
                         Text("Pesquise alguma linha ou destino do seu ônibus")
                             .font(.system(size: 22))
                             .foregroundStyle(.secondary)
@@ -71,8 +70,13 @@ struct SheetView: View {
                 } else {
                     List(apiViewModel.busLines) { line in
                         LineCard(line: line, apiViewModel: apiViewModel)
+                            .listRowInsets(EdgeInsets(top: 4, leading: 12, bottom: 4, trailing: 12))
+                            .listRowSeparator(.hidden)
                     }
                     .listStyle(.plain)
+                    .onChange(of: apiViewModel.selectedLine?.cl) {
+                        withAnimation(.spring()) { isExpanded = false }
+                    }
                 }
             }
         }

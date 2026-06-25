@@ -13,6 +13,8 @@ struct LineCard: View {
 
     @State private var totalParadas: Int? = nil
 
+    var isSelected: Bool { apiViewModel.selectedLine?.cl == line.cl }
+
     var body: some View {
         HStack(spacing: 0) {
             LineIdentificator(letreiro: "\(line.lt)-\(line.tl)")
@@ -33,13 +35,24 @@ struct LineCard: View {
                         .font(.system(size: 12))
                         .foregroundStyle(.secondary)
                 } else {
-                    ProgressView()
-                        .scaleEffect(0.7)
+                    ProgressView().scaleEffect(0.7)
                 }
-                Spacer()
             }
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 8)
+        .padding(.horizontal, 4)
+        .background(isSelected ? Color.blue.opacity(0.1) : Color.clear)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            Task {
+                await apiViewModel.selectLine(line)
+                // Recolhe a sheet ao selecionar
+                withAnimation(.spring()) {
+                    // Sinaliza pro ContentView recolher
+                }
+            }
+        }
         .task {
             totalParadas = await apiViewModel.fetchParadas(codigoLinha: line.cl)
         }

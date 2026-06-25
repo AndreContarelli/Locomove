@@ -11,8 +11,12 @@ import Combine
 
 class APIViewModel: ObservableObject {
     @Published var busLines: [LineModel] = []
+    @Published var selectedLine: LineModel? = nil
+    @Published var selectedStops: [StopModel] = []
 
     private let baseUrl = "https://api.olhovivo.sptrans.com.br/v2.1"
+    
+    // Os cookies aqui so
     private let session: URLSession = {
         let configuration = URLSessionConfiguration.default
         configuration.httpCookieStorage = HTTPCookieStorage.shared
@@ -57,24 +61,35 @@ class APIViewModel: ObservableObject {
             let parsed = try JSONDecoder().decode([LineModel].self, from: data)
             await MainActor.run {
                 self.busLines = parsed
-                print("Sucesso! Linhas carregadas: \(parsed.count)")
+                print("Linhas carregadas: \(parsed.count)")
             }
         } catch {
             print("Erro no Decoder: \(error)")
         }
     }
-    
+
     func fetchParadas(codigoLinha: Int) async -> Int {
         let urlString = "\(baseUrl)/Parada/BuscarParadasPorLinha?codigoLinha=\(codigoLinha)"
         guard let url = URL(string: urlString) else { return 0 }
-
         do {
             let (data, _) = try await session.data(from: url)
             let paradas = try JSONDecoder().decode([StopModel].self, from: data)
             return paradas.count
+        } catch { return 0 }
+    }
+
+    func selectLine(_ line: LineModel) async {
+        await MainActor.run { selectedLine = line }
+
+        let urlString = "\(baseUrl)/Parada/BuscarParadasPorLinha?codigoLinha=\(line.cl)"
+        guard let url = URL(string: urlString) else { return }
+        do {
+            let (data, _) = try await session.data(from: url)
+            let paradas = try JSONDecoder().decode([StopModel].self, from: data)
+            print("Paradas carregadas: \(paradas.count)")
+            await MainActor.run { selectedStops = paradas }
         } catch {
-            print("Erro ao buscar paradas para linha \(codigoLinha): \(error)")
-            return 0
+            print("Erro ao buscar paradas: \(error)")
         }
     }
 }

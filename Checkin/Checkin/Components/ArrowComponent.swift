@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct ArrowComponent: View {
     var body: some View {
@@ -17,6 +18,9 @@ struct ArrowComponent: View {
             
             Image(systemName: "location")
                 .font(.system(size: 20))
+        }
+        .onTapGesture {
+            MapUserLocationButton()
         }
     }
 }

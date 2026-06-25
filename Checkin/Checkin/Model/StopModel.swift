@@ -7,14 +7,16 @@
 
 import Foundation
 
-struct StopModel: Codable, Identifiable {
+struct StopModel: Codable, Identifiable, Equatable {
     let cp: Int      
     let np: String
     let ed: String
+    let py: Double
+    let px: Double
 
     var id: Int { cp }
 
     enum CodingKeys: String, CodingKey {
-        case cp, np, ed
+        case cp, np, ed, py, px
     }
 }
