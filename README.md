@@ -43,7 +43,6 @@ A `APIViewModel` centraliza a comunicação com a Olho Vivo: autentica com token
 3. Insira seu token no lugar do token de autenticação usado em `SheetView.swift`
 4. Rode em um simulador ou dispositivo com iOS mais recente e permita o acesso à localização
 
-> ⚠️ **Nota de segurança:** atualmente o token da API está declarado direto no código-fonte. Antes de publicar o app ou compartilhar o repositório publicamente, mova-o para fora do controle de versão (variável de ambiente, arquivo `.xcconfig` ignorado no Git, ou um serviço de configuração remota).
 
 ## 🔭 Próximos passos
 
